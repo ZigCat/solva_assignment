@@ -23,31 +23,32 @@ public class AppTransaction {
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "transaction_sequence")
-    private Integer id;
+    @Column(name = "transaction_id")
+    private Long id;
 
-    @Column(name = "account_from", columnDefinition = "NUMERIC", nullable = false)
-    private BigInteger accountFrom;
+    @Column(name = "account_from", nullable = false)
+    private String accountFrom;
 
-    @Column(name = "account_to", columnDefinition = "NUMERIC", nullable = false)
-    private BigInteger accountTo;
+    @Column(name = "account_to", nullable = false)
+    private String accountTo;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "currency_shortname")
+    @Column(name = "currency_shortname", nullable = false)
     private Currency currencyShortname;
 
-    @Column(precision = 10, scale = 2)
+    @Column(name = "sum", precision = 10, scale = 2, nullable = false)
     private BigDecimal sum;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "expense_category")
+    @Column(name = "expense_category", nullable = false)
     private ExpenseCategory expenseCategory;
 
-    @Column(name = "datetime")
+    @Column(name = "datetime", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC+6")
     private ZonedDateTime dateTime;
 
-    public AppTransaction(BigInteger accountFrom,
-                          BigInteger accountTo,
+    public AppTransaction(String accountFrom,
+                          String accountTo,
                           Currency currencyShortname,
                           BigDecimal sum,
                           ExpenseCategory expenseCategory) {

@@ -1,0 +1,116 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: ZigCat
+      changes:
+        - createSequence:
+            sequenceName: limit_sequence
+            startValue: 1
+            allocationSize: 1
+        - createTable:
+            tableName: app_limit
+            columns:
+              - column:
+                  name: limit_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: limit_sum
+                  type: numeric(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: limit_datetime
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: limit_currency_shortname
+                  type: varchar(5)
+                  constraints:
+                    nullable: false
+        - addDefaultValue:
+            columnName: limit_id
+            tableName: app_limit
+            defaultValueComputed: "nextval('limit_sequence')"
+
+        - createSequence:
+            sequenceName: transaction_sequence
+            startValue: 1
+            allocationSize: 1
+        - createTable:
+            tableName: app_transaction
+            columns:
+              - column:
+                  name: transaction_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: account_from
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_to
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency_shortname
+                  type: varchar(5)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sum
+                  type: numeric(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expense_category
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: datetime
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+        - addDefaultValue:
+            columnName: transaction_id
+            tableName: app_transaction
+            defaultValueComputed: "nextval('transaction_sequence')"
+
+        - createSequence:
+            sequenceName: rate_sequence
+            startValue: 1
+            allocationSize: 1
+        - createTable:
+            tableName: currency_rate
+            columns:
+              - column:
+                  name: rate_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: currency_pair
+                  type: varchar(8)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: close
+                  type: numeric(10,2)
+              - column:
+                  name: previous_close
+                  type: numeric(10,2)
+        - addDefaultValue:
+            columnName: rate_id
+            tableName: currency_rate
+            defaultValueComputed: "nextval('rate_sequence')"

@@ -21,17 +21,18 @@ public class AppLimit {
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "limit_sequence")
-    private Integer id;
+    @Column(name = "limit_id")
+    private Long id;
 
-    @Column(name = "limit_sum", precision = 10, scale = 2)
+    @Column(name = "limit_sum", precision = 10, scale = 2, nullable = false)
     private BigDecimal limitSum;
 
-    @Column(name = "limit_datetime")
+    @Column(name = "limit_datetime", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC+6")
     private ZonedDateTime limitDatetime;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "limit_currency_shortname")
+    @Column(name = "limit_currency_shortname", nullable = false)
     private Currency limitCurrencyShortname;
 
     public AppLimit(BigDecimal limitSum,

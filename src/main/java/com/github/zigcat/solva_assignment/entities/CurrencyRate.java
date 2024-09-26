@@ -10,27 +10,29 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity
+@Entity(name = "currency_rate")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CurrencyRate {
     @Id
-    @SequenceGenerator(name = "pair_sequence",
-        sequenceName = "pair_sequence",
+    @SequenceGenerator(name = "rate_sequence",
+        sequenceName = "rate_sequence",
         allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "pair_sequence")
-    private Integer id;
+            generator = "rate_sequence")
+    @Column(name = "rate_id")
+    private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "currency_pair")
+    @Column(name = "currency_pair", nullable = false)
     private CurrencyPair currencyPair;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @Column(precision = 10, scale = 2)
+    @Column(name = "close", precision = 10, scale = 2)
     private BigDecimal close;
 
     @Column(name = "previous_close", precision = 10, scale = 2)

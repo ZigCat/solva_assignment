@@ -1,4 +1,6 @@
 spring:
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
   application:
     name: solva_assignment
   datasource:

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -51,6 +52,14 @@ public class CurrencyService {
         getCurrencyRates();
     }
 
+    public BigDecimal calculateExpenses(BigDecimal amount, CurrencyPair currencyPair){
+        CurrencyRate currencyRate = currencyRateRepository.findByCurrencyPair(currencyPair).get();
+        if(currencyRate.getClose() == null){
+            return amount.divide(currencyRate.getPreviousClose(), 2, RoundingMode.HALF_UP);
+        }
+        return amount.divide(currencyRate.getClose(), 2, RoundingMode.HALF_UP);
+    }
+
     private void getCurrencyRates(){
         fetchAndSaveCurrencyRates(Currency.USD, Currency.RUB);
         fetchAndSaveCurrencyRates(Currency.USD, Currency.KZT);
@@ -75,7 +84,9 @@ public class CurrencyService {
                 apiKey);
         ExchangeRateResponse response = restTemplate.getForObject(url, ExchangeRateResponse.class);
 
-        if(response != null){
+        assert response != null;
+        if(response.getExchangeRate() != null){
+            log.info("requested from alphavantage "+response.toString());
             currencyRate.setClose(BigDecimal.valueOf(Double.parseDouble(response.getExchangeRate().getExchangeRate())));
             currencyRateRepository.save(currencyRate);
         } else {
@@ -85,6 +96,6 @@ public class CurrencyService {
     }
 
     private CurrencyPair checkCurrencyPair(Currency currencyFrom, Currency currencyTo){
-        return CurrencyPair.valueOf(currencyTo.toString()+"/"+currencyFrom.toString());
+        return CurrencyPair.valueOf(currencyTo.toString()+"_"+currencyFrom.toString());
     }
 }
