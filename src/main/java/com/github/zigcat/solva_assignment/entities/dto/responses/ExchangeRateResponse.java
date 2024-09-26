@@ -9,6 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExchangeRateResponse {
-    @JsonProperty("Realtime Currency Exchange Rate")
-    private ExchangeRate exchangeRate;
+    @JsonProperty("symbol")
+    private String symbol;
+
+    @JsonProperty("rate")
+    private String rate;
+
+    @JsonProperty("timestamp")
+    private String timestamp;
 }

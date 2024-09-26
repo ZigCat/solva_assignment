@@ -24,7 +24,7 @@ public class CurrencyService {
     private final RestTemplate restTemplate;
     private final CurrencyRateRepository currencyRateRepository;
 
-    @Value("${alphavantage.key}")
+    @Value("${currency-api.key}")
     private String apiKey;
 
     @Autowired
@@ -78,16 +78,15 @@ public class CurrencyService {
             currencyRate = new CurrencyRate(currencyPair, null, null);
         }
 
-        String url = String.format("https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=%s&to_currency=%s&apikey=%s",
+        String url = String.format("https://api.twelvedata.com/exchange_rate?symbol=%s/%s&apikey=%s",
                 currencyFrom,
                 currencyTo,
                 apiKey);
         ExchangeRateResponse response = restTemplate.getForObject(url, ExchangeRateResponse.class);
-
-        assert response != null;
-        if(response.getExchangeRate() != null){
+        
+        if(response != null){
             log.info("requested from alphavantage "+response.toString());
-            currencyRate.setClose(BigDecimal.valueOf(Double.parseDouble(response.getExchangeRate().getExchangeRate())));
+            currencyRate.setClose(BigDecimal.valueOf(Double.parseDouble(response.getRate())));
             currencyRateRepository.save(currencyRate);
         } else {
             currencyRate.setClose(null);
