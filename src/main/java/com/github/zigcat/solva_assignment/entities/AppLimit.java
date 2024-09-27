@@ -1,6 +1,7 @@
 package com.github.zigcat.solva_assignment.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.zigcat.solva_assignment.entities.enums.Currency;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Entity(name = "app_limit")
 @Data
@@ -35,6 +37,9 @@ public class AppLimit {
     @Column(name = "limit_currency_shortname", nullable = false)
     private Currency limitCurrencyShortname;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "limit")
+    private List<LimitTransaction> limitTransactions;
     public AppLimit(BigDecimal limitSum) {
         this.limitSum = limitSum;
         this.limitDatetime = ZonedDateTime.now();

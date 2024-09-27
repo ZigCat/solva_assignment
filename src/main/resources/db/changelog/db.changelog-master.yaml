@@ -119,13 +119,11 @@ databaseChangeLog:
       author: ZigCat
       changes:
         - addColumn:
-            tableName: app_transaction
-            columns:
-              - column:
-                  name: limit_exceeded
-                  type: boolean
-                  constraints:
-                    nullable: false
+              tableName: app_limit
+              columns:
+                - column:
+                    name: expense_category
+                    type: varchar(10)
         - insert:
             tableName: app_limit
             columns:
@@ -138,3 +136,50 @@ databaseChangeLog:
               - column:
                   name: limit_currency_shortname
                   value: "USD"
+  - changeSet:
+      id: 3
+      author: ZigCat
+      changes:
+        - createSequence:
+            sequenceName: limit_transaction_sequence
+            startValue: 1
+            allocationSize: 1
+        - createTable:
+            tableName: limit_transaction
+            columns:
+              - column:
+                  name: limit_transaction_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: limit_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: transaction_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: limit_exceeded
+                  type: boolean
+                  constraints:
+                    nullable: false
+        - addDefaultValue:
+            columnName: limit_transaction_id
+            tableName: limit_transaction
+            defaultValueComputed: "nextval('limit_transaction_sequence')"
+        - addForeignKeyConstraint:
+            baseTableName: limit_transaction
+            baseColumnNames: limit_id
+            referencedTableName: app_limit
+            referencedColumnNames: limit_id
+            constraintName: fk_limit_limit_transaction
+        - addForeignKeyConstraint:
+            baseTableName: limit_transaction
+            baseColumnNames: transaction_id
+            referencedTableName: app_transaction
+            referencedColumnNames: transaction_id
+            constraintName: fk_transaction_limit_transaction

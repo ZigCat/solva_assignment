@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CurrencyRateRepository extends JpaRepository<CurrencyRate, Integer> {
+public interface CurrencyRateRepository extends JpaRepository<CurrencyRate, Long> {
     Optional<CurrencyRate> findByCurrencyPair(CurrencyPair currencyPair);
 }
