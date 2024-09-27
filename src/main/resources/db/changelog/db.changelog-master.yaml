@@ -134,7 +134,7 @@ databaseChangeLog:
                   value: 1000
               - column:
                   name: limit_datetime
-                  valueComputed: "CURRENT_TIMESTAMP"
+                  valueDate: date_trunc('MONTH', CURRENT_DATE)
               - column:
                   name: limit_currency_shortname
                   value: "USD"

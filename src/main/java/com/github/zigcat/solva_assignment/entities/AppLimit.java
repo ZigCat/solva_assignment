@@ -35,10 +35,9 @@ public class AppLimit {
     @Column(name = "limit_currency_shortname", nullable = false)
     private Currency limitCurrencyShortname;
 
-    public AppLimit(BigDecimal limitSum,
-                    Currency limitCurrencyShortname) {
+    public AppLimit(BigDecimal limitSum) {
         this.limitSum = limitSum;
         this.limitDatetime = ZonedDateTime.now();
-        this.limitCurrencyShortname = limitCurrencyShortname;
+        this.limitCurrencyShortname = Currency.USD;
     }
 }

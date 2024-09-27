@@ -11,7 +11,4 @@ import lombok.NoArgsConstructor;
 public class LimitDTO {
     @JsonProperty("limit_sum")
     private String limitSum;
-
-    @JsonProperty("limit_currency_shortname")
-    private String limitCurrencyShortname;
 }
