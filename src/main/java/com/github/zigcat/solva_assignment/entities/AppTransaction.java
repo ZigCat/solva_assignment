@@ -47,6 +47,9 @@ public class AppTransaction {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC+6")
     private ZonedDateTime dateTime;
 
+    @Column(name = "limit_exceeded", nullable = false)
+    private boolean limitExceeded;
+
     public AppTransaction(String accountFrom,
                           String accountTo,
                           Currency currencyShortname,

@@ -114,3 +114,27 @@ databaseChangeLog:
             columnName: rate_id
             tableName: currency_rate
             defaultValueComputed: "nextval('rate_sequence')"
+  - changeSet:
+      id: 2
+      author: ZigCat
+      changes:
+        - addColumn:
+            tableName: app_transaction
+            columns:
+              - column:
+                  name: limit_exceeded
+                  type: boolean
+                  constraints:
+                    nullable: false
+        - insert:
+            tableName: app_limit
+            columns:
+              - column:
+                  name: limit_sum
+                  value: 1000
+              - column:
+                  name: limit_datetime
+                  valueComputed: "CURRENT_TIMESTAMP"
+              - column:
+                  name: limit_currency_shortname
+                  value: "USD"
